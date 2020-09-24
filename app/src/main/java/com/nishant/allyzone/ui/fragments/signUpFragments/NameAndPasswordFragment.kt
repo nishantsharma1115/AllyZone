@@ -1,37 +1,59 @@
 package com.nishant.allyzone.ui.fragments.signUpFragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.nishant.allyzone.R
+import com.nishant.allyzone.util.SignUpNavData
+import kotlinx.android.synthetic.main.fragment_name_and_password.*
+import kotlinx.android.synthetic.main.fragment_name_and_password.view.*
 
-class NameAndPasswordFragment : Fragment(), View.OnClickListener {
+class NameAndPasswordFragment : Fragment(R.layout.fragment_name_and_password) {
 
-    lateinit var navController: NavController
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_name_and_password, container, false)
-    }
+    private var done = false
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
-        view.findViewById<Button>(R.id.btn_continue).setOnClickListener(this)
+
+        view.btn_continue.setOnClickListener {
+            val user = updateUser()
+            if (done) {
+                findNavController().navigate(
+                    NameAndPasswordFragmentDirections.actionNameAndPasswordFragmentToBirthdayFragment(
+                        user
+                    )
+                )
+            }
+        }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.btn_continue -> navController.navigate(R.id.action_nameAndPasswordFragment_to_birthdayFragment)
+    private fun updateUser(): SignUpNavData {
+
+        val args: NameAndPasswordFragmentArgs by navArgs()
+        val user = args.currentUser
+
+        when {
+            edt_fullName.text.isEmpty() -> {
+                edt_fullName.error = "Required"
+                edt_fullName.requestFocus()
+            }
+            edt_password.text.isEmpty() -> {
+                edt_password.error = "Required"
+                edt_password.requestFocus()
+            }
+            edt_password.text.toString() != edt_confirmPassword.text.toString() -> {
+                edt_confirmPassword.error = "Password and Confirm Password should be equal"
+            }
+            else -> {
+                user.fullName = edt_fullName.text.toString()
+                user.password = edt_password.text.toString()
+                done = true
+            }
         }
+
+        return user
     }
 
 }

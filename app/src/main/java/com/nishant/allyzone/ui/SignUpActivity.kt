@@ -1,7 +1,7 @@
 package com.nishant.allyzone.ui
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import com.nishant.allyzone.R
 
 class SignUpActivity : AppCompatActivity() {

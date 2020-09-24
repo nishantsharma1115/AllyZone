@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "848307514887",
+    "firebase_url": "https://allyzone-5a5d2.firebaseio.com",
+    "project_id": "allyzone-5a5d2",
+    "storage_bucket": "allyzone-5a5d2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:848307514887:android:07f2a3e1979d3570c484a2",
+        "android_client_info": {
+          "package_name": "com.nishant.allyzone"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "848307514887-2sujb620oajhqgblj3hlil1uan27mnd8.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nishant.allyzone",
+            "certificate_hash": "edaf480ebb5e2db79e40277743c23ad4650456f6"
+          }
+        },
+        {
+          "client_id": "848307514887-lav48ru2mpbfu4t7grj1ahlqvjb8l0jg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMBx78QnV6nFMG3HhhRTTg-eXUYmAiQCk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "848307514887-lav48ru2mpbfu4t7grj1ahlqvjb8l0jg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

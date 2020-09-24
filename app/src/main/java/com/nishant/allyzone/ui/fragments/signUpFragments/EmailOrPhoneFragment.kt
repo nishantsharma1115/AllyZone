@@ -1,40 +1,49 @@
 package com.nishant.allyzone.ui.fragments.signUpFragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
-import android.widget.Button
-import android.widget.TextView
 import androidx.fragment.app.Fragment
-import androidx.navigation.NavController
-import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.nishant.allyzone.R
+import com.nishant.allyzone.util.SignUpNavData
+import kotlinx.android.synthetic.main.fragment_email_or_phone.*
+import kotlinx.android.synthetic.main.fragment_email_or_phone.view.*
 
-class EmailOrPhoneFragment : Fragment(), View.OnClickListener {
+class EmailOrPhoneFragment : Fragment(R.layout.fragment_email_or_phone) {
 
-    lateinit var navController: NavController
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_email_or_phone, container, false)
-    }
+    private val user = SignUpNavData()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        navController = Navigation.findNavController(view)
-        view.findViewById<Button>(R.id.btn_next).setOnClickListener(this)
-        view.findViewById<TextView>(R.id.login).setOnClickListener(this)
+
+        view.btn_next.setOnClickListener {
+            if (updateLoginData()) {
+                findNavController().navigate(
+                    EmailOrPhoneFragmentDirections.actionEmailOrPhoneFragmentToNameAndPasswordFragment(
+                        user
+                    )
+                )
+            }
+        }
+
+        view.login.setOnClickListener {
+            activity?.onBackPressed()
+        }
     }
 
-    override fun onClick(v: View?) {
-        when (v?.id) {
-            R.id.btn_next -> navController.navigate(R.id.action_emailOrPhoneFragment_to_nameAndPasswordFragment)
-            R.id.login -> activity?.onBackPressed()
+    private fun updateLoginData(): Boolean {
+
+        var done = false;
+
+        if (edt_phoneOrEmail.text.isNotEmpty()) {
+            user.email = edt_phoneOrEmail.text.toString()
+            done = true
+        } else {
+            edt_phoneOrEmail.error = "Required"
+            edt_phoneOrEmail.requestFocus()
         }
+
+        return done
     }
 
 }
