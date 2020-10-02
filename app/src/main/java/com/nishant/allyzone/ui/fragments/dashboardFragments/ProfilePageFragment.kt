@@ -1,24 +1,35 @@
 package com.nishant.allyzone.ui.fragments.dashboardFragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
 import com.nishant.allyzone.R
+import com.nishant.allyzone.util.Resource
+import com.nishant.allyzone.viewmodel.DataViewModel
+import kotlinx.android.synthetic.main.fragment_profile_page.*
 
-class ProfilePageFragment : Fragment() {
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_profile_page, container, false)
-    }
+class ProfilePageFragment : Fragment(R.layout.fragment_profile_page) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        val userId: String = FirebaseAuth.getInstance().currentUser?.uid.toString()
+        val viewModel: DataViewModel = ViewModelProvider(this).get(DataViewModel::class.java)
+        viewModel.getUserData(userId)
+        viewModel.getUserDataStatus.observe(viewLifecycleOwner, Observer { response ->
+            when (response) {
+                is Resource.Success -> {
+                    response.data?.let {
+                        tv_username.text = it.username
+                        tv_posts.text = it.noOfPosts.toString()
+                        tv_fullName.text = it.name
+                        tv_ally.text = it.noOfAlly.toString()
+                        if (it.bio != null) tv_bio.text = it.bio
+                    }
+                }
+            }
+        })
     }
 }

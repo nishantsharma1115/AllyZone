@@ -1,54 +1,36 @@
 package com.nishant.allyzone.repositories
 
+import com.google.android.gms.tasks.Task
+import com.google.firebase.auth.AuthResult
 import com.google.firebase.auth.FirebaseAuth
-import com.nishant.allyzone.util.Resource
 import com.nishant.allyzone.util.SignUpNavData
 
 class AuthRepository {
 
     private val mAuth: FirebaseAuth = FirebaseAuth.getInstance()
 
-    suspend fun signUpUser(
-        user: SignUpNavData
-    ): Resource<SignUpNavData> {
-
-        var response: Resource<SignUpNavData> = Resource.Loading()
-
+    fun signUpUser(
+        user: SignUpNavData,
+        callback: (Task<AuthResult>) -> Unit
+    ) {
         mAuth.createUserWithEmailAndPassword(user.email, user.password)
             .addOnCompleteListener { task ->
-                response = if (task.isSuccessful) {
-                    user.userId = task.result?.user?.uid.toString()
-                    Resource.Success(user)
-                } else {
-                    Resource.Error("Error while Authentication")
-                }
+                callback(task)
             }
-            .addOnFailureListener { it ->
-                response = Resource.Error(it.message.toString())
-            }
-
-        return response
     }
 
     fun loginUser(
         email: String,
-        password: String
-    ): Resource<Boolean> {
-
-        var response: Resource<Boolean> = Resource.Loading()
-
+        password: String,
+        completeCallback: (Task<AuthResult>) -> Unit,
+        failureCallback: (Exception) -> Unit
+    ) {
         mAuth.signInWithEmailAndPassword(email, password)
             .addOnCompleteListener { task ->
-                response = if (task.isSuccessful) {
-                    Resource.Success(true)
-                } else {
-                    Resource.Error("Error while Login, check your Internet Connection")
-                }
+                completeCallback(task)
             }
-            .addOnFailureListener { it ->
-                response = Resource.Error(it.message.toString())
+            .addOnFailureListener {
+                failureCallback(it)
             }
-
-        return response
     }
 }

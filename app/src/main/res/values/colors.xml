@@ -6,6 +6,10 @@
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
+    <color name="light_grey">#B5B5B5</color>
 
     <color name="text_color">#9A9393</color>
+    <color name="weak">#DF0D0D</color>
+    <color name="medium">#F4D51B</color>
+    <color name="strong">#005E00</color>
 </resources>

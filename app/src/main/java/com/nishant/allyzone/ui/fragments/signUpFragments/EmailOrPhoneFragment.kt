@@ -1,6 +1,7 @@
 package com.nishant.allyzone.ui.fragments.signUpFragments
 
 import android.os.Bundle
+import android.util.Patterns
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
@@ -17,7 +18,7 @@ class EmailOrPhoneFragment : Fragment(R.layout.fragment_email_or_phone) {
         super.onViewCreated(view, savedInstanceState)
 
         view.btn_next.setOnClickListener {
-            if (updateLoginData()) {
+            if (updateLoginData() && validateEmail()) {
                 findNavController().navigate(
                     EmailOrPhoneFragmentDirections.actionEmailOrPhoneFragmentToNameAndPasswordFragment(
                         user
@@ -31,9 +32,30 @@ class EmailOrPhoneFragment : Fragment(R.layout.fragment_email_or_phone) {
         }
     }
 
+    private fun validateEmail(): Boolean {
+
+        var isCorrect = true
+
+        if (edt_phoneOrEmail.text.toString().isEmpty()) {
+            edt_phoneOrEmail.error = "Can not be Empty"
+            edt_phoneOrEmail.requestFocus()
+            isCorrect = false
+            return isCorrect
+        }
+
+        if (!edt_phoneOrEmail.text.toString().matches(Patterns.EMAIL_ADDRESS.toRegex())) {
+            edt_phoneOrEmail.error = "Invalid Email Address"
+            edt_phoneOrEmail.requestFocus()
+            isCorrect = false
+            return isCorrect
+        }
+
+        return isCorrect
+    }
+
     private fun updateLoginData(): Boolean {
 
-        var done = false;
+        var done = false
 
         if (edt_phoneOrEmail.text.isNotEmpty()) {
             user.email = edt_phoneOrEmail.text.toString()
