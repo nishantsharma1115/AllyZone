@@ -2,6 +2,7 @@ package com.nishant.allyzone.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.nishant.allyzone.R
 
 class EditProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
