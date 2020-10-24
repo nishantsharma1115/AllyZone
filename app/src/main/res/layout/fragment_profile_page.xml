@@ -48,7 +48,7 @@
         app:layout_constraintTop_toBottomOf="@id/toolbar">
 
         <LinearLayout
-            android:id="@+id/ll_followers"
+            android:id="@+id/ll_allys"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
@@ -65,7 +65,8 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_ally"
@@ -85,9 +86,11 @@
             app:layout_constraintStart_toStartOf="@id/stats_bg" />
 
         <LinearLayout
-            android:id="@+id/ll_following"
+            android:id="@+id/ll_editProfile"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:clickable="false"
+            android:focusable="false"
             android:gravity="center"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -97,14 +100,14 @@
             app:layout_constraintVertical_bias=".4">
 
             <ImageView
-                android:id="@+id/tv_following"
+                android:id="@+id/editProfileIcon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/edit_icon"
                 android:textSize="20sp" />
 
             <TextView
-                android:id="@+id/txt_following"
+                android:id="@+id/txt_editProfile"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Edit Profile" />
@@ -128,7 +131,8 @@
                 android:layout_height="wrap_content"
                 android:text=""
                 android:textColor="@color/black"
-                android:textSize="20sp" />
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/txt_posts"
