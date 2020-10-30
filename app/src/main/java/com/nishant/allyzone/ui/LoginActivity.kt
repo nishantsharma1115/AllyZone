@@ -4,14 +4,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.util.Patterns
 import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.nishant.allyzone.R
 import com.nishant.allyzone.util.Resource
 import com.nishant.allyzone.viewmodel.AuthViewModel
 import kotlinx.android.synthetic.main.activity_login.*
+import java.lang.RuntimeException
 
 class LoginActivity : AppCompatActivity() {
 
@@ -24,10 +25,13 @@ class LoginActivity : AppCompatActivity() {
         viewModel.loginStatus.observe(this, Observer { response ->
             when (response) {
                 is Resource.Loading -> {
-                    showProgressBar()
+                    invalidUsernameDesc.visibility = View.GONE
+                    findEmail.visibility = View.GONE
+                    wrongPasswordDesc.visibility = View.GONE
+                    resetPassword.visibility = View.GONE
+                    loadingButton.startAnimation()
                 }
                 is Resource.Success -> {
-                    hideProgressBar()
                     startActivity(
                         Intent(
                             this,
@@ -37,12 +41,20 @@ class LoginActivity : AppCompatActivity() {
                     finish()
                 }
                 is Resource.Error -> {
-                    hideProgressBar()
-                    Toast.makeText(
-                        this,
-                        "New to AllyZone. Please Sign Up",
-                        Toast.LENGTH_LONG
-                    ).show()
+
+                    loadingButton.revertAnimation {
+                        loadingButton.text = "Login"
+                        loadingButton.setBackgroundColor(applicationContext.resources.getColor(R.color.weak))
+                    }
+                    response.message?.let {
+                        if ("There is no user record corresponding to this identifier" in it) {
+                            invalidUsernameDesc.visibility = View.VISIBLE
+                            findEmail.visibility = View.VISIBLE
+                        } else if ("The password is invalid" in it) {
+                            wrongPasswordDesc.visibility = View.VISIBLE
+                            resetPassword.visibility = View.VISIBLE
+                        }
+                    }
                 }
             }
         })
@@ -50,55 +62,44 @@ class LoginActivity : AppCompatActivity() {
         signup.setOnClickListener {
             startActivity(Intent(this, SignUpActivity::class.java))
         }
-        btn_login.setOnClickListener {
+        loadingButton.setOnClickListener {
             if (validateCredential()) {
                 viewModel.loginUser(edt_email.text.toString(), edt_password.text.toString())
             }
         }
     }
 
-    private fun hideProgressBar() {
-        progress_bar.visibility = View.INVISIBLE
-        background_layout.alpha = 1F
-    }
-
-    private fun showProgressBar() {
-        progress_bar.visibility = View.VISIBLE
-        background_layout.alpha = 0.4F
+    override fun onDestroy() {
+        super.onDestroy()
+        loadingButton.dispose()
     }
 
     private fun validateCredential(): Boolean {
 
-        var isCorrect = true
-
         if (edt_email.text.toString().isEmpty()) {
             edt_email.error = "Can not be Empty"
             edt_email.requestFocus()
-            isCorrect = false
-            return isCorrect
+            return false
         }
 
         if (!edt_email.text.toString().matches(Patterns.EMAIL_ADDRESS.toRegex())) {
             edt_email.error = "Invalid Email Address"
             edt_email.requestFocus()
-            isCorrect = false
-            return isCorrect
+            return false
         }
 
         if (edt_password.text.toString().isEmpty()) {
             edt_password.error = "Can not be Empty"
             edt_password.requestFocus()
-            isCorrect = false
-            return isCorrect
+            return false
         }
 
         if (edt_password.text.toString().length < 8) {
             edt_password.error = "Invalid Password"
             edt_password.requestFocus()
-            isCorrect = false
-            return isCorrect
+            return false
         }
 
-        return isCorrect
+        return true
     }
 }

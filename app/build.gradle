@@ -4,6 +4,7 @@ apply plugin: 'kotlin-android-extensions'
 apply plugin: 'kotlin-kapt'
 apply plugin: "androidx.navigation.safeargs.kotlin"
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 android {
     compileSdkVersion 29
@@ -48,8 +49,8 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
 
     //Coroutines
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.5"
-    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.5"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.3.9"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9"
 
     //Coroutines lifecycle scope
     implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0"
@@ -71,15 +72,11 @@ dependencies {
     //Facebook SDK
     implementation 'com.facebook.android:facebook-android-sdk:5.15.3'
 
-    //Smooth Bottom Bar
-    implementation 'com.github.ibrahimsn98:SmoothBottomBar:1.7.6'
-
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation 'androidx.core:core-ktx:1.3.2'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.2'
-    testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
@@ -88,4 +85,13 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:19.4.0'
     implementation 'com.google.firebase:firebase-firestore-ktx:21.7.1'
     implementation 'com.google.firebase:firebase-storage-ktx:19.2.0'
+    implementation 'com.google.firebase:firebase-crashlytics-ktx:17.2.2'
+    implementation 'com.google.firebase:firebase-analytics-ktx:17.6.0'
+
+    //Testing
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation "com.google.truth:truth:1.1"
+
+    //Extras
+    implementation 'br.com.simplepass:loading-button-android:2.2.0'
 }
