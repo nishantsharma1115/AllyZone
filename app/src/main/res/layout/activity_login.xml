@@ -121,6 +121,7 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/login_button_bg"
         android:text="Login"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -169,5 +169,9 @@ W
 'app/src/main/res/drawable/save_icon.xml,0\8\08395c5c9e92e32e866b0a27ad830736c2ddf7af
 a
 1app/src/main/res/layout/fragment_profile_page.xml,1\b\1b77013e1c39d50e8596ba7e54d7c21118ce7f71
-a
-1app/src/main/res/layout/activity_edit_profile.xml,4\2\42ced6141386adf21fdadcd17bfa255ea2bece27
+R
+"app/src/main/res/drawable/done.xml,c\1\c15941450571390a5cee0ad69ed2104d695f4851
+]
+-app/src/main/res/drawable/login_button_bg.xml,1\5\156f22e1cf71210e3d8a36c30f4e2e1eb4bce643
+S
+#app/src/main/res/values/strings.xml,d\2\d2281fbb3027de2722081a53408dd77628bf080e

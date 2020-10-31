@@ -2,24 +2,22 @@ package com.nishant.allyzone.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Patterns
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.nishant.allyzone.R
+import com.nishant.allyzone.util.LoginActivityUtils
 import com.nishant.allyzone.util.Resource
 import com.nishant.allyzone.viewmodel.AuthViewModel
 import kotlinx.android.synthetic.main.activity_login.*
-import java.lang.RuntimeException
 
 class LoginActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
         val viewModel = ViewModelProvider(this).get(AuthViewModel::class.java)
 
         viewModel.loginStatus.observe(this, Observer { response ->
@@ -29,6 +27,12 @@ class LoginActivity : AppCompatActivity() {
                     findEmail.visibility = View.GONE
                     wrongPasswordDesc.visibility = View.GONE
                     resetPassword.visibility = View.GONE
+                    loadingButton.setBackgroundColor(
+                        ContextCompat.getColor(
+                            applicationContext,
+                            R.color.white
+                        )
+                    )
                     loadingButton.startAnimation()
                 }
                 is Resource.Success -> {
@@ -63,8 +67,32 @@ class LoginActivity : AppCompatActivity() {
             startActivity(Intent(this, SignUpActivity::class.java))
         }
         loadingButton.setOnClickListener {
-            if (validateCredential()) {
-                viewModel.loginUser(edt_email.text.toString(), edt_password.text.toString())
+
+            val credentials = LoginActivityUtils.validateCredentials(
+                edt_email.text.toString(),
+                edt_password.text.toString()
+            )
+
+            when (credentials) {
+                "EMAIL_EMPTY" -> {
+                    edt_email.error = "Can not be Empty"
+                    edt_email.requestFocus()
+                }
+                "PASSWORD_EMPTY" -> {
+                    edt_password.error = "Can not be Empty"
+                    edt_password.requestFocus()
+                }
+                "EMAIL_INVALID" -> {
+                    edt_email.error = "Invalid Email Address"
+                    edt_email.requestFocus()
+                }
+                "PASSWORD_SMALL" -> {
+                    edt_password.error = "Invalid Password"
+                    edt_password.requestFocus()
+                }
+                "VALIDATE" -> {
+                    viewModel.loginUser(edt_email.text.toString(), edt_password.text.toString())
+                }
             }
         }
     }
@@ -72,34 +100,5 @@ class LoginActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         loadingButton.dispose()
-    }
-
-    private fun validateCredential(): Boolean {
-
-        if (edt_email.text.toString().isEmpty()) {
-            edt_email.error = "Can not be Empty"
-            edt_email.requestFocus()
-            return false
-        }
-
-        if (!edt_email.text.toString().matches(Patterns.EMAIL_ADDRESS.toRegex())) {
-            edt_email.error = "Invalid Email Address"
-            edt_email.requestFocus()
-            return false
-        }
-
-        if (edt_password.text.toString().isEmpty()) {
-            edt_password.error = "Can not be Empty"
-            edt_password.requestFocus()
-            return false
-        }
-
-        if (edt_password.text.toString().length < 8) {
-            edt_password.error = "Invalid Password"
-            edt_password.requestFocus()
-            return false
-        }
-
-        return true
     }
 }
