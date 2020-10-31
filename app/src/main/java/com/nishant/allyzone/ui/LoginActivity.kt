@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.nishant.allyzone.R
+import com.nishant.allyzone.util.Constants
 import com.nishant.allyzone.util.LoginActivityUtils
 import com.nishant.allyzone.util.Resource
 import com.nishant.allyzone.viewmodel.AuthViewModel
@@ -47,14 +48,19 @@ class LoginActivity : AppCompatActivity() {
                 is Resource.Error -> {
 
                     loadingButton.revertAnimation {
-                        loadingButton.text = "Login"
-                        loadingButton.setBackgroundColor(applicationContext.resources.getColor(R.color.weak))
+                        loadingButton.text = Constants.LOGIN
+                        loadingButton.setBackgroundColor(
+                            ContextCompat.getColor(
+                                applicationContext,
+                                R.color.weak
+                            )
+                        )
                     }
                     response.message?.let {
-                        if ("There is no user record corresponding to this identifier" in it) {
+                        if (Constants.NO_EMAIL_FOUND in it) {
                             invalidUsernameDesc.visibility = View.VISIBLE
                             findEmail.visibility = View.VISIBLE
-                        } else if ("The password is invalid" in it) {
+                        } else if (Constants.INVALID_PASSWORD in it) {
                             wrongPasswordDesc.visibility = View.VISIBLE
                             resetPassword.visibility = View.VISIBLE
                         }
@@ -74,23 +80,23 @@ class LoginActivity : AppCompatActivity() {
             )
 
             when (credentials) {
-                "EMAIL_EMPTY" -> {
-                    edt_email.error = "Can not be Empty"
+                Constants.EMAIL_EMPTY -> {
+                    edt_email.error = Constants.CAN_NOT_BE_EMPTY
                     edt_email.requestFocus()
                 }
-                "PASSWORD_EMPTY" -> {
-                    edt_password.error = "Can not be Empty"
+                Constants.PASSWORD_EMPTY -> {
+                    edt_password.error = Constants.CAN_NOT_BE_EMPTY
                     edt_password.requestFocus()
                 }
-                "EMAIL_INVALID" -> {
-                    edt_email.error = "Invalid Email Address"
+                Constants.EMAIL_INVALID -> {
+                    edt_email.error = Constants.INVALID_EMAIL_ADDRESS
                     edt_email.requestFocus()
                 }
-                "PASSWORD_SMALL" -> {
-                    edt_password.error = "Invalid Password"
+                Constants.PASSWORD_SMALL -> {
+                    edt_password.error = Constants.INVALID_PASSWORD
                     edt_password.requestFocus()
                 }
-                "VALIDATE" -> {
+                Constants.VALIDATE -> {
                     viewModel.loginUser(edt_email.text.toString(), edt_password.text.toString())
                 }
             }

@@ -4,24 +4,22 @@ object LoginActivityUtils {
 
     fun validateCredentials(email: String, password: String): String {
 
-        val regex = "^[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+$"
-
         if (email.isEmpty()) {
-            return "EMAIL_EMPTY"
+            return Constants.EMAIL_EMPTY
         }
 
         if (password.isEmpty()) {
-            return "PASSWORD_EMPTY"
+            return Constants.PASSWORD_EMPTY
         }
 
-        if (!email.matches(regex.toRegex())) {
-            return "EMAIL_INVALID"
+        if (!email.matches(Constants.emailRegex.toRegex())) {
+            return Constants.EMAIL_INVALID
         }
 
         if (password.length < 8) {
-            return "PASSWORD_SMALL"
+            return Constants.PASSWORD_SMALL
         }
 
-        return "VALIDATE"
+        return Constants.VALIDATE
     }
 }
