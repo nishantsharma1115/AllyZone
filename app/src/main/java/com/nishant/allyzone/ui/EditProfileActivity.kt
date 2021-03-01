@@ -72,23 +72,11 @@ class EditProfileActivity : AppCompatActivity() {
         viewModel.uploadProfilePictureStatus.observe(this, Observer { response ->
             when (response) {
                 is Resource.Success -> {
-                    response.data?.let { success ->
-                        if (!success) {
-                            Toast.makeText(
-                                this,
-                                "Error Occurred While changing Profile Picture",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
+                    user?.profilePicture = response.data
                 }
-
                 is Resource.Error -> {
-                    Toast.makeText(
-                        this,
-                        "Error Occurred While changing Profile Picture",
-                        Toast.LENGTH_SHORT
-                    ).show()
+                    Toast.makeText(this, "Unable to upload Profile Picture", Toast.LENGTH_LONG)
+                        .show()
                 }
             }
         })

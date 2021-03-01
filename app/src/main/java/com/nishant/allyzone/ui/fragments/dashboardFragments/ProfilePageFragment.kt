@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.nishant.allyzone.R
 import com.nishant.allyzone.modals.User
@@ -39,6 +40,12 @@ class ProfilePageFragment : Fragment(R.layout.fragment_profile_page) {
                 }
             }
         })
+
+        if (user.profilePicture != null) {
+            Glide.with(this)
+                .load(user.profilePicture)
+                .into(profilePicture)
+        }
 
         ll_editProfile.setOnClickListener {
             activity?.startActivity(

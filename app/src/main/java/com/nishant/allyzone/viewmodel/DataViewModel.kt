@@ -57,17 +57,13 @@ class DataViewModel(
         })
     }
 
-    val uploadProfilePictureStatus: MutableLiveData<Resource<Boolean>> = MutableLiveData()
+    val uploadProfilePictureStatus: MutableLiveData<Resource<String>> = MutableLiveData()
     fun uploadProfilePicture(
         userId: String,
         file: Uri
     ) = viewModelScope.launch {
-        dataRepository.uploadProfilePicture(userId, file, { task ->
-            if (task.isSuccessful) {
-                uploadProfilePictureStatus.postValue(Resource.Success(true))
-            } else {
-                uploadProfilePictureStatus.postValue(Resource.Success(false))
-            }
+        dataRepository.uploadProfilePicture(userId, file, { url ->
+            uploadProfilePictureStatus.postValue(Resource.Success(url))
         }, { exception ->
             uploadProfilePictureStatus.postValue(Resource.Error(exception.message.toString()))
         })

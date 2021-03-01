@@ -1,13 +1,11 @@
 package com.nishant.allyzone.repositories
 
 import android.net.Uri
-import android.util.Log
 import com.google.android.gms.tasks.Task
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.UploadTask
 import com.google.firebase.storage.ktx.storage
 import com.nishant.allyzone.modals.User
 
@@ -56,26 +54,25 @@ class DataRepository {
         db.collection("Users")
             .document(user.userId)
             .set(user, SetOptions.merge())
-            .addOnCompleteListener { task ->
-                onCompleteCallback(task)
-            }
-            .addOnFailureListener {
-                onFailureCallback(it)
-            }
+            .addOnCompleteListener(onCompleteCallback)
+            .addOnFailureListener(onFailureCallback)
     }
 
     fun uploadProfilePicture(
         userId: String,
         file: Uri,
-        onCompleteCallback: (Task<UploadTask.TaskSnapshot>) -> Unit,
+        onSuccessCallback: (String) -> Unit,
         onFailureCallback: (Exception) -> Unit
     ) {
         storageRef.child("ProfilePicture").child(userId).putFile(file)
-            .addOnCompleteListener { task ->
-                onCompleteCallback(task)
+            .addOnSuccessListener { task ->
+                if (task.metadata != null && task.metadata!!.reference != null) {
+                    val result = task.storage.downloadUrl
+                    result.addOnSuccessListener {
+                        onSuccessCallback(it.toString())
+                    }
+                }
             }
-            .addOnFailureListener {
-                onFailureCallback(it)
-            }
+            .addOnFailureListener(onFailureCallback)
     }
 }
