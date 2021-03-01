@@ -4,26 +4,26 @@
     <item
         android:id="@+id/homePageFragment"
         android:icon="@drawable/home"
-        android:title="" />
+        android:title="Home" />
 
     <item
         android:id="@+id/searchPageFragment"
         android:icon="@drawable/search"
-        android:title="" />
+        android:title="Search" />
 
     <item
         android:id="@+id/profilePageFragment"
         android:icon="@drawable/profile"
-        android:title="" />
+        android:title="Profile" />
 
     <item
         android:id="@+id/notificationFragment"
         android:icon="@drawable/notification"
-        android:title="" />
+        android:title="Notification" />
 
     <item
         android:id="@+id/addPostFragment"
         android:icon="@drawable/add_post"
-        android:title="" />
+        android:title="Add Post" />
 
 </menu>

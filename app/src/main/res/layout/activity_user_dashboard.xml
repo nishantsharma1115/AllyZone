@@ -25,19 +25,26 @@
 
     </FrameLayout>
 
-    <com.google.android.material.bottomnavigation.BottomNavigationView
+    <nl.joery.animatedbottombar.AnimatedBottomBar
         android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:backgroundTint="@color/white"
-        app:elevation="5dp"
-        app:itemIconTint="@color/black"
-        app:itemRippleColor="@color/black"
-        app:labelVisibilityMode="unlabeled"
+        app:abb_animationInterpolator="@android:anim/overshoot_interpolator"
+        app:abb_indicatorAnimation="slide"
+        app:abb_indicatorAppearance="round"
+        app:abb_indicatorColor="@color/colorPrimary"
+        app:abb_indicatorHeight="4dp"
+        app:abb_indicatorLocation="bottom"
+        app:abb_indicatorMargin="16dp"
+
+        app:abb_rippleColor="@color/colorPrimaryDark"
+        app:abb_rippleEnabled="true"
+        app:abb_selectedIndex="1"
+        app:abb_selectedTabType="text"
+        app:abb_tabColorSelected="@color/colorPrimary"
+        app:abb_tabs="@menu/menu_bottom_nav"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:menu="@menu/menu_bottom_nav" />
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

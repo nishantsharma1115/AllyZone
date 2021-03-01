@@ -95,4 +95,7 @@ dependencies {
 
     //Extras
     implementation 'br.com.simplepass:loading-button-android:2.2.0'
+
+    //Bottom Navigation
+    implementation 'nl.joery.animatedbottombar:library:1.0.9'
 }
